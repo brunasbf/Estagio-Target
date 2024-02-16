@@ -1,33 +1,47 @@
 import java.text.DecimalFormat;
+
 public class CalculoPercentualFaturamento {
 
     public static void main(String[] args) {
         // Faturamento mensal por estado
-        double faturamentoSP = 67836.43;
-        double faturamentoRJ = 36678.66;
-        double faturamentoMG = 29229.88;
-        double faturamentoES = 27165.48;
-        double faturamentoOutros = 19849.53;
+        double[] faturamentos = {67836.43, 36678.66, 29229.88, 27165.48, 19849.53};
 
         // Calcula o valor total mensal
-        double valorTotalMensal = faturamentoSP + faturamentoRJ + faturamentoMG + faturamentoES + faturamentoOutros;
+        double valorTotalMensal = calcularValorTotalMensal(faturamentos);
 
-        // Calcula o percentual de representação de cada estado
-        double percentualSP = (faturamentoSP / valorTotalMensal) * 100;
-        double percentualRJ = (faturamentoRJ / valorTotalMensal) * 100;
-        double percentualMG = (faturamentoMG / valorTotalMensal) * 100;
-        double percentualES = (faturamentoES / valorTotalMensal) * 100;
-        double percentualOutros = (faturamentoOutros / valorTotalMensal) * 100;
+        // Calcula e exibe os percentuais de representação por estado
+        exibirPercentuais(faturamentos, valorTotalMensal);
+    }
 
+    private static double calcularValorTotalMensal(double[] faturamentos) {
+        double valorTotal = 0;
+        for (double faturamento : faturamentos) {
+            valorTotal += faturamento;
+        }
+        return valorTotal;
+    }
+
+    private static void exibirPercentuais(double[] faturamentos, double valorTotalMensal) {
         // Formatação para duas casas decimais
         DecimalFormat formato = new DecimalFormat("0.00");
 
         // Exibe os resultados
         System.out.println("Percentual de Representação por Estado:");
-        System.out.println("SP: " + formato.format(percentualSP) + "%");
-        System.out.println("RJ: " + formato.format(percentualRJ) + "%");
-        System.out.println("MG: " + formato.format(percentualMG) + "%");
-        System.out.println("ES: " + formato.format(percentualES) + "%");
-        System.out.println("Outros: " + formato.format(percentualOutros) + "%");
+
+        for (int i = 0; i < faturamentos.length; i++) {
+            double percentual = (faturamentos[i] / valorTotalMensal) * 100;
+            System.out.println(obterNomeEstado(i) + ": " + formato.format(percentual) + "%");
+        }
+    }
+
+    private static String obterNomeEstado(int indice) {
+        return switch (indice) {
+            case 0 -> "SP";
+            case 1 -> "RJ";
+            case 2 -> "MG";
+            case 3 -> "ES";
+            case 4 -> "Outros";
+            default -> "Desconhecido";
+        };
     }
 }
